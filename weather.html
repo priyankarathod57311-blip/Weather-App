@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weatherapp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    font-family: 'Poppins', sans-serif;
+
+    /* Light sky background */
+   background-image: url(./assests/images/cloud.jpg);
+}
+
+/* Main card */
+body > div {
+    width: 100%;
+    max-width: 450px;
+    padding: 38px 32px;
+    text-align: center;
+
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 28px;
+
+    box-shadow: 0 20px 60px rgba(40, 105, 160, 0.18);
+}
+
+/* Heading */
+h1 {
+    color: #173b65;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+h1::before {
+    content: "🌤️ ";
+}
+
+/* Input */
+input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #d5e5f4;
+    border-radius: 15px;
+    outline: none;
+
+    background: #f4f9ff;
+    color: #173b65;
+    font-family: inherit;
+    font-size: 15px;
+    text-align: center;
+
+    transition: 0.3s;
+}
+
+input:focus {
+    background: white;
+    border-color: #3998ed;
+    box-shadow: 0 0 0 4px rgba(57, 152, 237, 0.12);
+}
+
+/* Search button */
+button {
+    margin: 18px 0 25px;
+    padding: 14px 38px;
+
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #36a1f5, #2865e8);
+    color: white;
+
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+
+    box-shadow: 0 8px 18px rgba(40, 101, 232, 0.22);
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(40, 101, 232, 0.3);
+}
+
+/* City name */
+h3 {
+    color: #173b65;
+    font-size: 24px;
+    margin: 8px 0 18px;
+    overflow-wrap: anywhere;
+}
+
+/* Weather information */
+h4 {
+    padding: 15px 17px;
+    margin: 12px 0;
+
+    background: #f0f7ff;
+    border: 1px solid #e1effc;
+    border-radius: 14px;
+
+    color: #285477;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    overflow-wrap: anywhere;
+
+    transition: 0.25s;
+}
+
+/* Hide empty weather details before searching */
+h3:empty,
+h4:empty {
+    display: none;
+}
+
+h4:hover {
+    background: #e4f2ff;
+    transform: translateY(-2px);
+}
+
+/* Mobile view */
+@media (max-width: 480px) {
+    body {
+        padding: 15px;
+    }
+
+    body > div {
+        padding: 30px 22px;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    h3 {
+        font-size: 21px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Weather App</h1>
+        <input type="text" placeholder="Enter City" id="put">
+        <button onclick="cityname()">Search</button>
+        <h3 id="name"></h3>
+        <h4 id="temp"></h4>
+        <h4 id="hum"></h4>
+        <h4 id="pres"></h4>
+        <h4 id="weat"></h4>
+    </div>
+    <script>
+        async function cityname(){
+            let city= document.querySelector("input").value;
+            let data= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=5760fd2b56df38275f29a81302c3deb8`)
+            let res= await data.json();
+             console.log( res );
+
+        document.querySelector("#name").textContent =
+            `📍 ${res.name}, ${res.sys.country}`;
+
+        document.querySelector("#temp").textContent =
+            `☀️ Temperature: ${res.main.temp.toFixed(1)} °C`;
+
+        document.querySelector("#hum").textContent =
+            `💧 Humidity: ${res.main.humidity}%`;
+
+        document.querySelector("#pres").textContent =
+            `🌡️ Pressure: ${res.main.pressure} hPa`;
+
+        document.querySelector("#weat").textContent =
+            `☁️ Weather: ${res.weather[0].main}`;
+
+            
+
+
+        }
+    </script>
+    
+</body>
+</html>
